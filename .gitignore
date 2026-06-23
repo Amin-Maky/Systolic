@@ -1,0 +1,23 @@
+# Vivado Project Files
+*.xpr
+*.jou
+*.log
+*.str
+*.dmp
+*.wdb
+*.wcfg
+*.pb
+
+# Vivado Directories to ignore
+.Xil/
+*.runs/
+*.sim/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.ip_user_files/
+managed_ip_project/
+
+# OS generated files
+.DS_Store
+Thumbs.db
