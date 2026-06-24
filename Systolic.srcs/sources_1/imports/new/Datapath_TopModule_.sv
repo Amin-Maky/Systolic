@@ -3,7 +3,7 @@
 // Company: Am/148
 // Engineer: AminMaky
 //////////////////////////////////////////////////////////////////////////////////
-module Datapath #(parameter Num = 3, parameter intop = 4, parameter inleft = 4) (Reset ,Clock, LoudIn, LoudUp, LoudLeft, RealTimeOut, Result, FinishLoudFlag, EndFlag);
+module Datapath #(parameter Num = 3, parameter intop = 4, parameter inleft = 4) (Reset ,Clock, LoudIn, LoudUp, LoudLeft, RealTimeOut, ColWire, RowWire, Result, FinishLoudFlag, EndFlag);
 
     input  logic Reset;
     input  logic Clock;
@@ -15,7 +15,9 @@ module Datapath #(parameter Num = 3, parameter intop = 4, parameter inleft = 4) 
     // logic [intop  - 1 : 0]  LoudUp   [Num - 1 : 0] [Num - 1 : 0]; // for Simulation
     // logic [inleft - 1 : 0]  LoudLeft [Num - 1 : 0] [Num - 1 : 0]; // for Simulation
     output logic [(intop + inleft + Num) : 0] RealTimeOut [Num - 1 : 0] [Num - 1 : 0]; // for Simulation
-    
+    output logic [(intop + inleft + Num) : 0] ColWire      [Num - 1 : 0] [Num - 1 : 0];
+    output logic [inleft - 1 :0]              RowWire      [Num - 1 : 0] [Num - 1 : 0];
+  
     output logic [(intop + inleft + Num) : 0] Result [Num - 1 : 0] [Num - 1 : 0];
     output logic FinishLoudFlag;
     output logic EndFlag;
@@ -27,9 +29,11 @@ module Datapath #(parameter Num = 3, parameter intop = 4, parameter inleft = 4) 
     wire   UpEndFlag;
     wire LeftEndFlag;
     wire     OutFlag;
+    // wire     ZeroSet;
     
     // Controling ...
     nand(FinishLoudFlag, UpEndFlag, LeftEndFlag);
+    // and (ZeroSet, ~FinishLoudFlag, Reset);
     
     Systolic2D #(.intop(intop), .inleft(inleft), .Num(Num)) SystolicUnit (
                                                                             .Reset(Reset),
@@ -39,6 +43,8 @@ module Datapath #(parameter Num = 3, parameter intop = 4, parameter inleft = 4) 
                                                                             .InFlag(FinishLoudFlag),
                                                                             .RealTimeResult(RealTimeOut),  // [(intop + inleft + Num) : 0] RealTimeResult [Num - 1 : 0] [Num - 1 : 0]
                                                                                                            // for Simulation
+                                                                            .ColWire(ColWire),
+                                                                            .RowWire(RowWire),
                                                                             .OutFlag(OutFlag),
                                                                             .Result(OutWire));             // [(intop + inleft + Num) : 0] Result [Num - 1 : 0]
                                                                             

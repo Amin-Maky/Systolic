@@ -3,7 +3,7 @@
 // Company: Am/148
 // Engineer: AminMaky
 //////////////////////////////////////////////////////////////////////////////////
-module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3) (Reset, Clock, LeftSide, TopSide, InFlag,/* RealTimeResult*/, OutFlag, Result);
+module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3) (Reset, Clock, LeftSide, TopSide, InFlag, RealTimeResult, ColWire, RowWire, OutFlag, Result);
 
   input logic Reset;
   input logic Clock;
@@ -11,13 +11,13 @@ module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3
   input logic [inleft - 1 :0]  TopSide [Num - 1 : 0];
   input logic InFlag;
 
-  // output logic [(intop + inleft + Num) : 0] RealTimeResult [Num - 1 : 0] [Num - 1 : 0]; // for Simulation
+  output logic [(intop + inleft + Num) : 0] RealTimeResult [Num - 1 : 0] [Num - 1 : 0]; // for Simulation
   output logic [(intop + inleft + Num) : 0] Result [Num - 1 : 0];
   output logic OutFlag;
     
   logic [intop  - 1 :0]              TopInputWire [Num - 1 : 0];
-  logic [(intop + inleft + Num) : 0] ColWire      [Num - 1 : 0] [Num - 1 : 0];
-  logic [inleft - 1 :0]              RowWire      [Num - 1 : 0] [Num - 1 : 0];
+  output logic [(intop + inleft + Num) : 0] ColWire      [Num - 1 : 0] [Num - 1 : 0];
+  output logic [inleft - 1 :0]              RowWire      [Num - 1 : 0] [Num - 1 : 0];
   logic FlagWire  [Num: 0] [Num - 1: 0];
   
   
@@ -61,7 +61,7 @@ module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3
              .TopInput(TopInputWire[k]),        .LeftInput(RowWire[0][k]),
              .InFlag(FlagWire[0][k]),         .DownOutput(ColWire[0][k]), 
              .RightOutput(RowWire[0][k + 1]), .OutFlag(FlagWire[1][k])
-         // ,.Result(RealTimeResult[0][k]) // for Simulation
+            ,.Result(RealTimeResult[0][k]) // for Simulation
               );
       end
     endgenerate
@@ -76,7 +76,7 @@ module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3
              .TopInput(ColWire[m - 1][0]),    .LeftInput(RowWire[m][0]),
              .InFlag(FlagWire[m][0]),         .DownOutput(ColWire[m][0]), 
              .RightOutput(RowWire[m][1]),     .OutFlag(FlagWire[m + 1][0])
-         // ,.Result(RealTimeResult[m][0]) // for Simulation
+            ,.Result(RealTimeResult[m][0]) // for Simulation
              ); 
        end
     endgenerate
@@ -94,7 +94,7 @@ module Systolic2D #(parameter intop = 1, parameter inleft = 1, parameter Num = 3
              .TopInput(ColWire[i - 1][j]),    .LeftInput(RowWire[i][j]),
              .InFlag(FlagWire[i][j]),         .DownOutput(ColWire[i][j]), 
              .RightOutput(RowWire[i][j + 1]), .OutFlag(FlagWire[i + 1][j]) 
-         // ,.Result(RealTimeResult[i][j]) // for Simulation
+            ,.Result(RealTimeResult[i][j]) // for Simulation
              );
             end
     end

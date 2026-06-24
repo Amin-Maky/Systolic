@@ -18,7 +18,10 @@ module TopTestModule;
     logic [inleft - 1:0] LoudLeft [Num-1:0][Num-1:0];
 
     // Output
-    logic [(intop + inleft + Num) : 0] RealTimeResult [Num - 1 : 0] [Num - 1 : 0]; // for Debug
+    logic [(intop + inleft + Num) : 0] RealTimeResult [Num - 1 : 0] [Num - 1 : 0];  // for Debug
+    logic [(intop + inleft + Num) : 0] ColWire      [Num - 1 : 0] [Num - 1 : 0];    // for Debug
+    logic [inleft - 1 :0]              RowWire      [Num - 1 : 0] [Num - 1 : 0];    // for Debug
+  
     logic [(intop + inleft + Num) : 0] Result [Num - 1 : 0] [Num - 1 : 0];
     logic FinishLoudFlag;
     logic EndFlag;
@@ -31,6 +34,8 @@ module TopTestModule;
         .LoudUp(LoudUp),
         .LoudLeft(LoudLeft),
         .RealTimeOut(RealTimeResult),
+        .RowWire(RowWire),
+        .ColWire(ColWire),
         .Result(Result),
         .FinishLoudFlag(FinishLoudFlag),
         .EndFlag(EndFlag)
